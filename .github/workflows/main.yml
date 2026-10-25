@@ -28,26 +28,13 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Gradle
+      - name: Set up Gradle 8.7
         uses: gradle/actions/setup-gradle@v4
-
-      - name: Make Gradle wrapper executable
-        run: |
-          if [ -f gradlew ]; then
-            chmod +x gradlew
-          fi
+        with:
+          gradle-version: '8.7'
 
       - name: Build debug APK
-        run: |
-          if [ -f ./gradlew ]; then
-            ./gradlew assembleDebug --stacktrace
-          elif [ -f ./gradle/wrapper/gradle-wrapper.properties ]; then
-            echo "Gradle wrapper files are incomplete."
-            exit 1
-          else
-            echo "Gradle wrapper is missing. Add gradlew and gradle/wrapper files."
-            exit 1
-          fi
+        run: gradle assembleDebug --stacktrace
 
       - name: Upload debug APK
         if: success()
